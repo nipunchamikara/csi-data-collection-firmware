@@ -1,0 +1,15 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define CONFIG_LESS_INTERFERENCE_CHANNEL 11
+#define CONFIG_SEND_FREQUENCY 5
+#define TOTAL_DEVICES 3
+#define DEFAULT_DEVICE_ID 2
+#define TIMEOUT 10
+#define MICROSECONDS_IN_SECOND 1000000
+#define BROADCAST_ADDR {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+#define TAG "csi_send_recv"
+#define CSI_DATA_LENGTH 256
+#define CSI_DATA_ARR_LEN 4
+
+#endif // CONSTANTS_H
