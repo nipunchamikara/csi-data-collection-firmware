@@ -48,11 +48,11 @@ These files define structures and functions for handling CSI data. Key structure
 
 Key functions include:
 
-- `send_csi_data()`: Sends the CSI data to the broadcast address using ESP-NOW.
-- `print_csi_data(const csi_data_t *csi_data)`: Prints the CSI data to the console.
-- `print_payload(const payload_t *payload)`: Prints the payload to the console.
+- `send_csi_data(const uint16_t time_index)`: Sends CSI data to the broadcast address using ESP-NOW.
+- `print_payload(const payload_t *payload)`: Prints payload to the console.
 - `wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info)`: Callback function to handle received CSI data.
-- `turns_away(const uint8_t device_id)`: Returns the number of devices between the current and last device IDs.
+- `turns_away(const uint8_t device_id, const uint8_t last_id)`: Returns the number of devices between the current and
+  last device IDs.
 
 ## How It Works
 
@@ -96,6 +96,15 @@ To clean the build directory, use:
 
 ```sh
 make clean
+```
+
+## Logging
+
+The first device (device 0) logs all sent and received payloads to the console in the form of comma-separated value. The
+header of the log is as follows:
+
+```csv
+type,time_index,device_id,recv_device_id,mac,rssi,rate,sig_mode,mcs,cwb,smoothing,not_sounding,aggregation,stbc,fec_coding,sgi,noise_floor,ampdu_cnt,channel,secondary_channel,timestamp,ant,sig_len,rx_state,csi_data
 ```
 
 ## Contributing
