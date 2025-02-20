@@ -74,6 +74,12 @@ First, add the ports for the ESP32 devices to the `Makefile`:
 PORTS = /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2
 ```
 
+These ports can be found by running the following in the terminal:
+
+```bash
+ls /dev/tty*
+```
+
 To build and flash the firmware to the ESP32 devices, use the following commands:
 
 ```sh
