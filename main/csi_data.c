@@ -12,7 +12,7 @@ payload_t payload;
 
 uint8_t last_id;
 
-uint16_t last_time_index;
+uint32_t last_time_index;
 
 uint8_t timeout_count;
 
@@ -28,7 +28,7 @@ uint8_t org_id[3] = {0x18, 0xfe, 0x34};
  */
 uint8_t min(const uint8_t a, const uint8_t b) { return a < b ? a : b; }
 
-void send_csi_data(const uint16_t time_index) {
+void send_csi_data(const uint32_t time_index) {
   const uint8_t peer_addr[] = BROADCAST_ADDR;
   payload.time_index = time_index;
   const esp_err_t ret = esp_now_send(peer_addr, (uint8_t *) &payload, sizeof(payload_t));
