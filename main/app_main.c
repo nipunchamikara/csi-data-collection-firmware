@@ -45,7 +45,7 @@ void app_main() {
   // Initialize the payload length and index
   payload.csi_data_arr_len = 0;
   payload_index = 0;
-  last_time_index = UINT8_MAX;
+  last_time_index = UINT16_MAX;
 
   // Initialize Wi-Fi, ESP-NOW, and CSI
   wifi_init();
@@ -67,7 +67,7 @@ void app_main() {
     usleep(MICROSECONDS_IN_SECOND / CONFIG_SEND_FREQUENCY);
 
     // Only start timeout if CSI data has been received from device 0
-    if (last_time_index == UINT8_MAX) {
+    if (last_time_index == UINT16_MAX) {
       continue;
     }
 
