@@ -18,7 +18,9 @@ uint8_t timeout_count;
 
 uint8_t payload_index;
 
-uint8_t org_id[3] = {0x18, 0xfe, 0x34};
+uint8_t org_id[3] = ORG_ID;
+
+uint8_t payload_magic_number[] = PAYLOAD_MAGIC_NUMBER;
 
 /**
  * Returns the minimum of two values.
@@ -31,6 +33,7 @@ uint8_t min(const uint8_t a, const uint8_t b) { return a < b ? a : b; }
 void send_csi_data(const uint16_t time_index) {
   const uint8_t peer_addr[] = BROADCAST_ADDR;
   payload.time_index = time_index;
+  memcpy(&payload.magic, payload_magic_number, sizeof(payload_magic_number));
   const esp_err_t ret = esp_now_send(peer_addr, (uint8_t *) &payload, sizeof(payload_t));
   if (ret != ESP_OK) {
     ESP_LOGW(TAG, "<%s> ESP-NOW send error", esp_err_to_name(ret));
@@ -71,12 +74,9 @@ void print_csi_data(const csi_data_t *csi_data, const uint8_t recv_device_id) {
  */
 void print_payload(const payload_t *payload) {
   for (int i = 0; i < payload->csi_data_arr_len; i++) {
-    if (payload->device_id != 0 && i != 0) {
-      // TODO: Investigate why the next elements are offset by 7 bytes
-      print_csi_data((void *) &payload->csi_data_arr[i] + 7, payload->device_id);
-    } else {
-      print_csi_data(&payload->csi_data_arr[i], payload->device_id);
-    }
+    // TODO: Investigate why the next elements are offset by 7 bytes each
+    const int offset = payload->device_id ? 7 * i : 0;
+    print_csi_data((void *) &payload->csi_data_arr[i] + offset, payload->device_id);
   }
 }
 
@@ -93,6 +93,11 @@ void wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info) {
 
   // ESP-NOW header takes up 15 bytes (refer to README.md)
   const payload_t *p = (struct payload *) (info->payload + 15);
+
+  // Check if the magic number is valid
+  if (memcmp(p->magic, payload_magic_number, sizeof(payload_magic_number)) != 0) {
+    return;
+  }
 
   // Check if the device ID is valid
   if (p->device_id >= TOTAL_DEVICES)

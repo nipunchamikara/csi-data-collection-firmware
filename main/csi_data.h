@@ -25,6 +25,7 @@ typedef struct csi_data {
  * CSI data.
  */
 typedef struct payload {
+  uint8_t magic[4]; /**< Magic number to identify the payload */
   uint8_t device_id; /**< Device ID that has received the CSI data (Rx) */
   uint16_t time_index; /**< Time index when the payload was sent/received */
   uint8_t csi_data_arr_len; /**< Number of CSI data entries */
