@@ -6,54 +6,6 @@ first time. The device ID is persisted, allowing the same program to be flashed 
 and received payloads, which contain CSI data. The system uses a timeout mechanism and follows a round-robin protocol
 where each device sends a packet once the previous device has sent a packet.
 
-## Project Structure
-
-- `CMakeLists.txt`: CMake build configuration file.
-- `app_init.c/h`: Source and header file for application initialization.
-- `app_main.c`: Main application source file.
-- `app_nvs.c/h`: Source and header file for non-volatile storage (NVS) operations.
-- `constants.h`: Defines constants used throughout the project.
-- `csi_data.c/h`: Source and header file for handling CSI data.
-- `idf_component.yml`: Component configuration file.
-
-## Files
-
-### `CMakeLists.txt`
-
-This file contains the build configuration for the project using CMake.
-
-### `app_init.c` and `app_init.h`
-
-These files handle the initialization of the application, including setting up the ESP-NOW communication and configuring
-the device.
-
-### `app_main.c`
-
-This is the main application file where the primary logic of the project is implemented.
-
-### `app_nvs.c` and `app_nvs.h`
-
-These files handle operations related to non-volatile storage (NVS), such as storing and retrieving the device ID.
-
-### `constants.h`
-
-Defines various constants used in the project, such as device IDs, timeout values, and buffer sizes.
-
-### `csi_data.c` and `csi_data.h`
-
-These files define structures and functions for handling CSI data. Key structures include:
-
-- `csi_data_t`: Holds CSI data received from a device.
-- `payload_t`: Holds the payload of CSI data received from all devices.
-
-Key functions include:
-
-- `send_csi_data(const uint16_t time_index)`: Sends CSI data to the broadcast address using ESP-NOW.
-- `print_payload(const payload_t *payload)`: Prints payload to the console.
-- `wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info)`: Callback function to handle received CSI data.
-- `turns_away(const uint8_t device_id, const uint8_t last_id)`: Returns the number of devices between the current and
-  last device IDs.
-
 ## How It Works
 
 1. **Flashing the Devices**: Each ESP32 device is flashed with the same program. The default device ID is set during the
@@ -97,6 +49,9 @@ make monitor DEVICE=<device_id>
 
 Replace `<device_id>` with the device ID of the ESP32 device you want to flash. The device ID should be an integer.
 If the device ID is not specified, the default device ID is 0.
+
+If the device is being flash for the first time, set the `DEFAULT_DEVICE_ID` variable in the `constants.h` file to the
+device ID of the device being flashed.
 
 To flash the firmware and then monitor the serial output, use:
 
