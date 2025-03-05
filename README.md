@@ -68,10 +68,16 @@ Key functions include:
 
 ## Building and Flashing
 
-First, add the ports for the ESP32 devices to the `Makefile`:
+To build and flash the firmware to the ESP32 devices, you need to have the ESP-IDF installed. If you haven't already
+installed the ESP-IDF, follow the instructions in
+the [ESP-IDF Programming Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html).
+The Makefile assumes that the ESP-IDF is installed in the `~/esp/esp-idf` directory. If it is installed in a different
+directory, update the `IDF_PATH` variable in the Makefile.
+
+Next, add the ports for the ESP32 devices to the `Makefile`:
 
 ```makefile
-PORTS = /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2
+PORTS = /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2 /dev/ttyUSB3
 ```
 
 These ports can be found by running the following in the terminal:
@@ -112,6 +118,13 @@ header of the log is as follows:
 ```csv
 type,time_index,device_id,recv_device_id,mac,rssi,rate,sig_mode,mcs,cwb,smoothing,not_sounding,aggregation,stbc,fec_coding,sgi,noise_floor,ampdu_cnt,channel,secondary_channel,timestamp,ant,sig_len,rx_state,len,csi_data
 ```
+
+The following columns have been added to the log:
+
+- `time_index`: This is used to determine which iteration the data was sent or received. It is also used to identify the
+  packets that were sent and received at the same time.
+- `device_id`: The device ID of the device that sent the packet.
+- `recv_device_id`: The device ID of the device that received the packet.
 
 ## Contributing
 
