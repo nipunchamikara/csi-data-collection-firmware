@@ -40,7 +40,6 @@ void send_csi_data(const uint16_t time_index) {
   } else if (payload.device_id != 0) {
     ESP_LOGI(TAG, "ESP-NOW packet sent");
   }
-  usleep(MICROSECONDS_IN_SECOND / CONFIG_SEND_FREQUENCY);
 }
 
 /**
