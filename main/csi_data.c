@@ -10,7 +10,7 @@
 
 payload_t payload;
 
-uint8_t last_id;
+uint8_t prev_packet_device_id;
 
 uint16_t last_time_index;
 
@@ -100,7 +100,7 @@ void wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info) {
   }
 
   // Check if the device ID is valid
-  if (p->device_id >= TOTAL_DEVICES)
+  if (p->device_id >= CONFIG_TOTAL_DEVICES)
     return;
 
   if (payload.device_id != 0) {
@@ -133,13 +133,13 @@ void wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info) {
   if (payload.device_id == 0)
     print_payload(p);
 
-  last_id = p->device_id;
+  prev_packet_device_id = p->device_id;
   last_time_index = p->time_index;
   timeout_count = 0;
   payload.csi_data_arr_len = min(payload.csi_data_arr_len + 1, CSI_DATA_ARR_LEN - 1);
   payload_index++;
 
-  if (payload.device_id == (p->device_id + 1) % TOTAL_DEVICES) {
+  if (payload.device_id == (p->device_id + 1) % CONFIG_TOTAL_DEVICES) {
     // Print payload of sent packet if current device is the first device
     if (payload.device_id == 0)
       print_payload(&payload);

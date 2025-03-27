@@ -40,7 +40,7 @@ extern payload_t payload;
 /**
  * The last device ID from which CSI data was received.
  */
-extern uint8_t last_id;
+extern uint8_t prev_packet_device_id;
 
 /**
  * The time index of the last received CSI data.

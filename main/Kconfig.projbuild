@@ -1,0 +1,41 @@
+menu "Project Configuration"
+    config TOTAL_DEVICES
+        int "Total Devices"
+        default 1
+        help
+            Total number of ESP32 devices in the network.
+
+    config IS_SET_DEVICE_ID
+        bool "Set Device ID?"
+        default "n"
+        help
+            Whether to set the device ID of the ESP32 to a specific value.
+
+    config DEVICE_ID
+        depends on IS_SET_DEVICE_ID
+        int "Device ID"
+        default 0
+        range 0 TOTAL_DEVICES
+        help
+            The device ID of the ESP32. This is a unique integer value that identifies the device in the network.
+            The range of the device ID is from 0 to TOTAL_DEVICES - 1.
+
+    config LESS_INTERFERENCE_CHANNEL
+        int "Less Interference Channel"
+        default 11
+        range 1 13
+        help
+            Channel number to be used for Wi-Fi. This is the channel number that has the least interference in the area.
+
+    config SEND_FREQUENCY
+        int "Send Frequency"
+        default 25
+        help
+            Frequency at which the device sends data to the server in Hertz.
+
+    config CYCLE_TIMEOUT
+        int "Cycle Timeout"
+        default 10
+        help
+            Timeout for receiving packet from previous device in frequency cycles.
+endmenu
