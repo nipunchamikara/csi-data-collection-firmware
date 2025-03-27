@@ -59,9 +59,9 @@ void print_csi_data(const csi_data_t *csi_data, const uint8_t recv_device_id) {
              rx_ctrl->channel, rx_ctrl->secondary_channel, rx_ctrl->timestamp, rx_ctrl->ant,
              rx_ctrl->sig_len, rx_ctrl->rx_state);
 
-  ets_printf(",%d,\"[%d", CSI_DATA_LENGTH, csi_data->buf[0]);
+  ets_printf(",%d,\"[%d", csi_data->len, csi_data->buf[0]);
 
-  for (int i = 1; i < CSI_DATA_LENGTH; i++) {
+  for (int i = 1; i < csi_data->len; i++) {
     ets_printf(",%d", csi_data->buf[i]);
   }
 
@@ -127,6 +127,7 @@ void wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info) {
   memcpy(csi_data->mac, info->mac, sizeof(info->mac));
   memcpy(csi_data->dmac, info->dmac, sizeof(info->dmac));
   memcpy(csi_data->buf, info->buf, info->len * sizeof(uint8_t));
+  csi_data->len = info->len;
   csi_data->time_index = p->time_index;
 
   // Print the payload of received packet if current device is the first device
