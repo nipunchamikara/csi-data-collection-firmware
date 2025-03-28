@@ -39,7 +39,7 @@ void now_init() {
   ESP_ERROR_CHECK(esp_now_add_peer(&peer));
 
   esp_now_rate_config_t rate_config = {
-      .phymode = WIFI_PHY_MODE_HT40,
+      .phymode = WIFI_PHY_MODE_HT20,
       .rate = WIFI_PHY_RATE_MCS0_SGI,
   };
   const uint8_t peer_addr[] = BROADCAST_ADDR;
