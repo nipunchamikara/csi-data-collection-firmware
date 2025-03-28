@@ -40,6 +40,10 @@ clean: ## Clean the project
 	. $(IDF_PATH)/export.sh && \
         idf.py clean
 
+configure: ## Open the IDF menuconfig
+	. $(IDF_PATH)/export.sh && \
+        idf.py menuconfig
+
 full-clean: ## Clean the project and the build directory
 	. $(IDF_PATH)/export.sh && \
         idf.py fullclean

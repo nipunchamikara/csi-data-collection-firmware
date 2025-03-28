@@ -2,5 +2,6 @@
 build
 cmake-build-debug
 sdkconfig
+sdkconfig.old
 dependencies.lock
 .clang-format

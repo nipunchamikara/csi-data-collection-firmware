@@ -16,16 +16,16 @@
 /**
  * Returns the number of devices between the current and last device IDs.
  * @param device_id The current device ID.
- * @param last_id The last device ID.
+ * @param previous_packet_device_id The previous packet sender device ID.
  * @return The number of devices between the current and last device IDs.
  */
-uint8_t turns_away(const uint8_t device_id, const uint8_t last_id) {
+uint8_t turns_away(const uint8_t device_id, const uint8_t previous_packet_device_id) {
   // device 2, last device 0, 2 - 0 = 2
-  if (device_id > last_id) {
-    return device_id - last_id;
+  if (device_id > previous_packet_device_id) {
+    return device_id - previous_packet_device_id;
   }
   // device 0, last device 2, 3 - 2 + 0 = 1
-  return TOTAL_DEVICES - last_id + device_id;
+  return CONFIG_TOTAL_DEVICES - previous_packet_device_id + device_id;
 }
 
 void app_main() {
@@ -37,10 +37,12 @@ void app_main() {
   }
   ESP_ERROR_CHECK(ret);
 
-  // Get the device ID from NVS or set the default ID
+#if CONFIG_IS_SET_DEVICE_ID
+  store_device_id(CONFIG_DEVICE_ID);
+#endif
+
   payload.device_id = get_device_id();
-  ESP_LOGI(TAG, "Device ID: %d", payload.device_id);
-  last_id = (payload.device_id + TOTAL_DEVICES - 1) % TOTAL_DEVICES;
+  prev_packet_device_id = (payload.device_id + CONFIG_TOTAL_DEVICES - 1) % CONFIG_TOTAL_DEVICES;
 
   // Initialize the payload length and index
   payload.csi_data_arr_len = 0;
@@ -75,10 +77,10 @@ void app_main() {
 
     // Determine the multiplier based on the distance between the current and last device IDs
     // This multiplier is used to increase the timeout count for devices further away
-    const int multiplier = turns_away(payload.device_id, last_id);
+    const int multiplier = turns_away(payload.device_id, prev_packet_device_id);
 
     // If the timeout count exceeds the timeout threshold, send CSI data
-    if (timeout_count >= TIMEOUT * multiplier * multiplier) {
+    if (timeout_count >= CONFIG_CYCLE_TIMEOUT * multiplier * multiplier) {
       ESP_LOGW(TAG, "ESP-NOW Timeout %d", timeout_count);
       send_csi_data(last_time_index++);
       timeout_count = 0;

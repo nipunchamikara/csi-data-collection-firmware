@@ -15,6 +15,7 @@ typedef struct csi_data {
   wifi_pkt_rx_ctrl_t rx_ctrl; /**< RX control information */
   uint8_t mac[6]; /**< Source MAC address of the CSI data */
   uint8_t dmac[6]; /**< Destination MAC address of the CSI data */
+  uint16_t len; /**< Length of the CSI data buffer */
   int8_t buf[CSI_DATA_LENGTH]; /**< CSI data buffer */
 } csi_data_t;
 
@@ -40,7 +41,7 @@ extern payload_t payload;
 /**
  * The last device ID from which CSI data was received.
  */
-extern uint8_t last_id;
+extern uint8_t prev_packet_device_id;
 
 /**
  * The time index of the last received CSI data.

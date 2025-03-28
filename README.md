@@ -38,10 +38,31 @@ These ports can be found by running the following in the terminal:
 ls /dev/tty*
 ```
 
-To build and flash the firmware to the ESP32 devices, use the following commands:
+First, install and configure ESP-IDF:
 
 ```sh
 make install
+```
+
+Before building and flashing, configure the project:
+
+```sh
+make configure
+```
+
+The following configuration options are available specific to the project under the `Project Configuration` menu:
+
+- Total Devices: The total number of ESP32 devices in the network.
+- Set Device ID?: Boolean value whether to set the device ID or not. If checked, the device ID can be set.
+- Device ID: The device ID of the ESP32 device. This is only available if `Set Device ID?` is checked.
+- Less Interference Channel: The channel with less interference. This is the channel that the ESP32 devices will use
+  for communication.
+- Send Frequency: The frequency at which the ESP32 devices send packets to each other.
+- Timeout: The number of frequency cycles before the next device sends a packet again.
+
+To build and flash the firmware to the ESP32 devices, use the following commands:
+
+```sh
 make build
 make flash DEVICE=<device_id>
 make monitor DEVICE=<device_id>
@@ -49,9 +70,6 @@ make monitor DEVICE=<device_id>
 
 Replace `<device_id>` with the device ID of the ESP32 device you want to flash. The device ID should be an integer.
 If the device ID is not specified, the default device ID is 0.
-
-If the device is being flash for the first time, set the `DEFAULT_DEVICE_ID` variable in the `constants.h` file to the
-device ID of the device being flashed.
 
 To flash the firmware and then monitor the serial output, use:
 
