@@ -21,6 +21,7 @@ uint8_t payload_index;
 
 uint8_t org_id[3] = ORG_ID;
 
+// Magic number to ensure we are only accepting ESP32 devices that are part of the same network
 uint8_t payload_magic_number[] = PAYLOAD_MAGIC_NUMBER;
 
 void send_csi_data(const uint16_t time_index) {
