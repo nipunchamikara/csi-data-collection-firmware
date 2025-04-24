@@ -53,7 +53,7 @@ void csi_init() {
       .htltf_en = true,
       .stbc_htltf2_en = true,
       .ltf_merge_en = true,
-      .channel_filter_en = true,
+      .channel_filter_en = false,
       .manu_scale = false,
       .shift = false,
   };
