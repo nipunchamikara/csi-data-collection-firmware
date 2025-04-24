@@ -1,5 +1,6 @@
 #include <rom/ets_sys.h>
 #include <string.h>
+#include <sys/param.h>
 #include <unistd.h>
 
 #include "esp_log.h"
@@ -21,14 +22,6 @@ uint8_t payload_index;
 uint8_t org_id[3] = ORG_ID;
 
 uint8_t payload_magic_number[] = PAYLOAD_MAGIC_NUMBER;
-
-/**
- * Returns the minimum of two values.
- * @param a The first value.
- * @param b The second value.
- * @return The minimum of the two values.
- */
-uint8_t min(const uint8_t a, const uint8_t b) { return a < b ? a : b; }
 
 void send_csi_data(const uint16_t time_index) {
   const uint8_t peer_addr[] = BROADCAST_ADDR;
@@ -137,7 +130,7 @@ void wifi_csi_rx_cb(void *ctx, wifi_csi_info_t *info) {
   prev_packet_device_id = p->device_id;
   last_time_index = p->time_index;
   timeout_count = 0;
-  payload.csi_data_arr_len = min(payload.csi_data_arr_len + 1, CSI_DATA_ARR_LEN - 1);
+  payload.csi_data_arr_len = MIN(payload.csi_data_arr_len + 1, CSI_DATA_ARR_LEN - 1);
   payload_index++;
 
   if (payload.device_id == (p->device_id + 1) % CONFIG_TOTAL_DEVICES) {
